@@ -66,3 +66,11 @@ set_property(TARGET gpio_demo PROPERTY CXX_STANDARD 11)
 target_link_libraries(gpio_demo matrix_creator_hal)
 target_link_libraries(gpio_demo ${CMAKE_THREAD_LIBS_INIT})
 target_link_libraries(gpio_demo wiringPi)
+
+add_executable(nfc_demo nfc_demo.cpp)
+set_property(TARGET nfc_demo PROPERTY CXX_STANDARD 11)
+target_link_libraries(nfc_demo matrix_creator_hal)
+target_link_libraries(nfc_demo ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries(nfc_demo wiringPi)
+
+
