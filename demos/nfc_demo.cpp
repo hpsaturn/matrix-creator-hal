@@ -30,19 +30,43 @@ int main() {
   bus->SpiInit();
   
   uint16_t nfc_add = 0x3000;
-  uint16_t cs = 0x0001;
-  uint16_t counter_div = 0x00FF;
-  uint16_t nfc_internal_add_0 = 0x0000;
-  uint16_t nfc_internal_0 = 0x0003;
-  uint16_t nfc_internal_add_1 = 0x0007;
+  uint16_t cs = 0x0000;
+  uint16_t counter_div = 0x2010;
+  uint16_t nfc_internal_dat_0 = 0x0707;
+  uint16_t nfc_internal_dat_1 = 0x0707;
   uint16_t dummy = 0x0000;
   uint16_t read_data;
 
+  read_data = 0;
+  bus->SpiWrite16(nfc_add + 2, 0x0001);
   bus->SpiWrite16(nfc_add + 3, counter_div);
-  bus->SpiWrite16(nfc_add + 2, cs);
-  bus->SpiWrite16(nfc_add + 0, nfc_internal_add_0);
-  bus->SpiRead16(0x3001, (unsigned char *)&read_data);
-  std::cout << "Read RUN : " << read_data << std::endl;
+  bus->SpiRead16(nfc_add + 3, (unsigned char *)&read_data);
+  std::cout << "Read Divisor : " << std::hex << read_data << std::dec << std::endl;
+
+  bus->SpiWrite16(nfc_add + 2, 0x0000);
+
+  bus->SpiWrite16(nfc_add, nfc_internal_dat_0);
+  bus->SpiRead16(nfc_add + 1, (unsigned char *)&read_data);
+  std::cout << "Read busy : " << std::hex << read_data << std::dec << std::endl;
+  while(read_data == 0x0001){
+    bus->SpiRead16(nfc_add + 1, (unsigned char *)&read_data);
+    std::cout << "Read busy 1 : " << std::hex << read_data << std::dec << std::endl;
+  }
+  
+  bus->SpiWrite16(nfc_add + 2, 0x0001);
+  usleep(100); 
+  bus->SpiWrite16(nfc_add + 2, 0x0000);
+ 
+  bus->SpiWrite16(nfc_add, nfc_internal_dat_1);
+  bus->SpiRead16(nfc_add + 1, (unsigned char *)&read_data); 
+  
+  while(read_data == 0x0001){
+   bus->SpiRead16(nfc_add + 1, (unsigned char *)&read_data);
+   std::cout << "Read busy 2 : " << std::hex << read_data << std::dec << std::endl;
+  }
+
+  bus->SpiRead16(nfc_add + 4, (unsigned char *)&read_data);
+  std::cout << "Read Data : "  << read_data  << std::endl; 
 
   /*
   bus->SpiRead16(nfc_add+1, (unsigned char *)&read_data);
