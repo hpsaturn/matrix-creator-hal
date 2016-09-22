@@ -158,7 +158,7 @@ bool WishboneBus::SpiRead(uint16_t add, unsigned char *data, int length) {
   return true;
 }
 
-bool WishboneBus::SpiRead16(uint16_t add, unsigned char *data) {
+bool WishboneBus::SpiRead16(uint16_t add, unsigned char *data) {  //TODO:Avoid use pointer in data argument
   std::unique_lock<std::mutex> lock(mutex_); 
 
   const int length = 2;

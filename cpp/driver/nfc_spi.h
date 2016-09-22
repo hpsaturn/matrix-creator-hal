@@ -15,25 +15,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CPP_DRIVER_CREATOR_MEMORY_MAP_H_
-#define CPP_DRIVER_CREATOR_MEMORY_MAP_H_
+#ifndef CPP_DRIVER_NFC_SPI_H
+#define CPP_DRIVER_NFC_SPI_H
 
 #include <string>
+#include "./matrix_driver.h"
+
+const uint32_t DATA_ADDR = 0;
+const uint32_t BUSY_ADDR = 1;
+const uint32_t CS_ADDR  = 2;     
+const uint32_t DIVISOR_ADDR = 3;
+const uint32_t NRST_ADDR = 4;
 
 namespace matrix_hal {
 
-/* FPGA Wishbone address map */
-const uint32_t kMicrophoneArrayBaseAddress = 0x1800;
-const uint32_t kEverloopBaseAddress = 0x2000;
-const uint32_t kGPIOBaseAddress = 0x2800;
-const uint32_t kNFCSpi = 0x3000;
-const uint16_t kMCUBaseAddress = 0x3800;
+class NFCSpi : public MatrixDriver {
+ public:
+  NFCSpi();
+  bool Init();
+  bool Transfer(uint16_t * txData, uint16_t * rxData, uint16_t length);
 
-/* MCU offsets map */
-const uint16_t kMemoryOffsetUV = 0x00;
-const uint16_t kMemoryOffsetPressure = 0x10;
-const uint16_t kMemoryOffsetHumidity = 0x20;
-const uint16_t kMemoryOffsetIMU = 0x30;
-
+ private:
+  bool SetCS();
+  bool ClearCS();
+  bool IsBusy();
+  uint16_t divisor_;
+  uint16_t busy_;
+};
 };      // namespace matrix_hal
-#endif  // CPP_DRIVER_CREATOR_MEMORY_MAP_H_
+#endif  // CPP_DRIVER_PRESSURE_SENSOR_H_
+
