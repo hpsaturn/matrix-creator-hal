@@ -60,10 +60,10 @@ bool NFCSpi::Reset(){
   if (!wishbone_) return false;
   uint16_t nrst = 0;
   wishbone_->SpiWrite16( kNFCSpi + NRST_ADDR,nrst);
-  usleep(100);
+  usleep(10000);
   nrst = 1;
   wishbone_->SpiWrite16( kNFCSpi + NRST_ADDR,nrst);
-  usleep(100);
+  usleep(10000);
   return true;
 }
 
