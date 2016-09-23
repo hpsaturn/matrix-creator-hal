@@ -30,7 +30,7 @@ NFCSpi::NFCSpi() : divisor_(0x0), busy_(0x0) {}
 */
 bool NFCSpi::Init(){
   if (!wishbone_) return false;
-  divisor_ = 16;	
+  divisor_ = 0xFFFF;	
   wishbone_->SpiWrite16( kNFCSpi + DIVISOR_ADDR,divisor_);
   ClearCS(); 
   return true;
@@ -53,8 +53,20 @@ bool NFCSpi::ClearCS(){
 bool NFCSpi::IsBusy(){
   if (!wishbone_) return false;
   wishbone_->SpiRead16(kNFCSpi + BUSY_ADDR, (unsigned char *)&busy_);
+  std::cout << "busy:" << busy_ << std::endl;
   return true; 
 }
+
+bool NFCSpi::Reset(){
+  if (!wishbone_) return false;
+  uint16_t nrst = 0;
+  wishbone_->SpiWrite16( kNFCSpi + NRST_ADDR,nrst);
+  usleep(100);
+  nrst = 1;
+  wishbone_->SpiWrite16( kNFCSpi + NRST_ADDR,nrst);
+  return true;
+}
+
 
 bool NFCSpi::Transfer(uint16_t * txData, uint16_t * rxData, uint16_t length) {
   if (!wishbone_) return false;
@@ -62,6 +74,7 @@ bool NFCSpi::Transfer(uint16_t * txData, uint16_t * rxData, uint16_t length) {
   SetCS();   
   for(int i = 0 ; i < length ; i++){ 
     wishbone_->SpiWrite16( kNFCSpi + DATA_ADDR, txData[i]);
+    IsBusy();
     while(busy_){
       IsBusy();
     } 
@@ -70,5 +83,12 @@ bool NFCSpi::Transfer(uint16_t * txData, uint16_t * rxData, uint16_t length) {
   ClearCS();
   return true;
 }
+
+void NFCSpi::Setup(WishboneBus *wishbone){
+  MatrixDriver::Setup(wishbone);
+  Reset();
+  Init();  
+}
+
 };  // namespace matrix_hal
 

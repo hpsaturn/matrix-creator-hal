@@ -33,8 +33,9 @@ class NFCSpi : public MatrixDriver {
  public:
   NFCSpi();
   bool Init();
+  bool Reset();
   bool Transfer(uint16_t * txData, uint16_t * rxData, uint16_t length);
-
+  void Setup(WishboneBus *wishbone);
  private:
   bool SetCS();
   bool ClearCS();
