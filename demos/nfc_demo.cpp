@@ -30,8 +30,11 @@ int main() {
   hal::NFCSpi nfc;
   nfc.Setup(&bus);
   uint16_t tx[1] = {0x0004};
-  uint16_t rx[1] = {0x0000};
-  nfc.Transfer(tx,rx,sizeof(tx));
-  std::cout << "Read Data : " << std::hex  <<  rx[1]  << std::endl; 
+  uint16_t rx[1];
+  nfc.Transfer((uint16_t *)tx,(uint16_t *)rx,1);
+  std::cout << "Read Data : " << std::hex  <<  rx[0]  << std::endl; 
+  tx[0] = 0x8006; 
+  nfc.Transfer((uint16_t *)tx,(uint16_t *)rx,1);
+  std::cout << "Read Data : " << std::hex  <<  rx[0]  << std::endl; 
   return 0;
 }

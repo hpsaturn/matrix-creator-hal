@@ -53,7 +53,6 @@ bool NFCSpi::ClearCS(){
 bool NFCSpi::IsBusy(){
   if (!wishbone_) return false;
   wishbone_->SpiRead16(kNFCSpi + BUSY_ADDR, (unsigned char *)&busy_);
-  std::cout << "busy:" << busy_ << std::endl;
   return true; 
 }
 
@@ -64,6 +63,7 @@ bool NFCSpi::Reset(){
   usleep(100);
   nrst = 1;
   wishbone_->SpiWrite16( kNFCSpi + NRST_ADDR,nrst);
+  usleep(100);
   return true;
 }
 
@@ -72,7 +72,7 @@ bool NFCSpi::Transfer(uint16_t * txData, uint16_t * rxData, uint16_t length) {
   if (!wishbone_) return false;
   
   SetCS();   
-  for(int i = 0 ; i < length ; i++){ 
+  for(int i = 0 ; i < length ; i++){
     wishbone_->SpiWrite16( kNFCSpi + DATA_ADDR, txData[i]);
     IsBusy();
     while(busy_){
