@@ -9,6 +9,8 @@ ADM_EXTRA_WARNINGS()
 
 find_package(Threads)
 
+find_library (FFTW_LIBRARIES NAMES fftw3f )
+
 add_subdirectory(../cpp/driver driver)
 
 
@@ -83,4 +85,11 @@ add_executable(firmware_info firmware_info.cpp)
 set_property(TARGET firmware_info PROPERTY CXX_STANDARD 11)
 target_link_libraries(firmware_info matrix_creator_hal)
 target_link_libraries(firmware_info ${CMAKE_THREAD_LIBS_INIT})
+
+add_executable(direction_of_arrival_demo direction_of_arrival_demo.cpp)
+set_property(TARGET direction_of_arrival_demo PROPERTY CXX_STANDARD 11)
+target_link_libraries(direction_of_arrival_demo matrix_creator_hal)
+target_link_libraries(direction_of_arrival_demo ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries(direction_of_arrival_demo wiringPi)
+target_link_libraries(direction_of_arrival_demo ${FFTW_LIBRARIES})
 
