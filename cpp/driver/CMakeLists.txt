@@ -14,6 +14,7 @@ include_directories(
 )
 
 set(matrix_creator_hal_src
+  cross_correlation.cpp
   dummy_sensor.cpp
   everloop.cpp
   gpio_control.cpp
@@ -36,6 +37,7 @@ install (TARGETS matrix_creator_hal DESTINATION lib)
 set (matrix_creator_hal_headers
   circular_queue.h
   creator_memory_map.h  
+  cross_correlation.h
   dummy_data.h          
   dummy_sensor.h        
   everloop.h        
