@@ -19,7 +19,6 @@
 #include "../cpp/driver/wishbone_bus.h"
 #include "../cpp/driver/cross_correlation.h"
 
-
 namespace hal = matrix_hal;
 
 const int N = 128;
@@ -69,7 +68,7 @@ int main() {
           m = c[i];
         }
 
-      for (int i = N-max_tof; i < N; i++)
+      for (int i = N - max_tof; i < N; i++)
         if (c[i] > m) {
           index = i;
           m = c[i];
@@ -89,6 +88,9 @@ int main() {
         index = current_index[channel];
       }
     }
+
+    if (index > 64) index = -(128 - index);
+
     if (mag > 2e8)
       std::cout << dir << "\t" << index << "\t" << mag << std::endl;
   }
