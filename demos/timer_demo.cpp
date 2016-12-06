@@ -80,7 +80,6 @@ int main(int argc, char *argv[]) {
   unsigned tick = 0;
   bool start_alarm = false;
 
-  // configuration time (default 3min)
   float time = 180.0 / 35.0;
   if (argc == 2) {
     std::istringstream iss(argv[1]);
