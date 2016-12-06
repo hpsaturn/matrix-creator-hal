@@ -48,11 +48,10 @@ void drawProgress(hal::EverloopImage *img, unsigned counter) {
   int min = counter % 35;
   unsigned green = 35;
   for (int y = 0; y <= min; y++) {
-    setColor(img, y, y*2, green, 0, 0);
-    green=35-y;
+    setColor(img, y, y * 2, green, 0, 0);
+    green = 35 - y;
   }
 }
-
 
 void drawSeconds(hal::EverloopImage *img, unsigned seconds) {
   int sec = seconds % 35;
@@ -135,22 +134,18 @@ int main(int argc, char *argv[]) {
     }
 
     if (start_alarm && tick < ticks) {
-      if(speaker){
+      if (speaker) {
         clear(&img);
-      }
-      else{
+      } else {
         drawProgress(&img, counter);
         drawSeconds(&img, seconds);
       }
-    }
-    else {
+    } else {
       clear(&img);
       drawProgress(&img, counter);
       drawSeconds(&img, seconds);
     }
     everloop.Write(&img);
-      
   }
-
   return 0;
 }
