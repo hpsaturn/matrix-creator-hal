@@ -36,7 +36,6 @@ Install the project...
 -- Installing: /usr/local/include/matrix_hal/microphone_array.h
 -- Installing: /usr/local/include/matrix_hal/wishbone_bus.h
 ```
-
 ### Examples
 Run some of the examples below.
 ```
@@ -49,5 +48,3 @@ cd demos
 # see the rest of the examples
 ls -l
 ```
-
-
