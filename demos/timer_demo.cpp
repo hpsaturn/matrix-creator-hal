@@ -32,7 +32,7 @@ void clear(hal::EverloopImage *img) {
   for (hal::LedValue &led : img->leds) {
     led.red = 0;
     led.green = 0;
-    led.blue = 0;
+    led.blue = 0
     led.white = 0;
   }
 }
